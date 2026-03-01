@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>З Днем Народження, Кохана!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключаем библиотеку для конфетти -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FAF6F0; /* Нежный кремовый цвет */
+            color: #4A4A4A;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Анимация для фоновых элементов */
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .bg-element {
+            position: fixed;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            font-size: 2rem;
+            animation: float linear infinite;
+        }
+
+        /* Анимации появления при скролле */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Анимация для вылетающих сердечек */
+        @keyframes flyHeart {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
+        }
+
+        .floating-heart {
+            position: fixed;
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 50;
+            animation: flyHeart 1.5s ease-out forwards;
+        }
+
+        /* Красивое оформление фотографий */
+        .photo-frame {
+            background: white;
+            padding: 12px 12px 40px 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 4px;
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.02);
+            z-index: 10;
+        }
+
+        .photo-frame.right-tilt {
+            transform: rotate(2deg);
+        }
+        
+        .photo-frame.right-tilt:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        /* Скрываем скроллбар для эстетики */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF6F0; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5D5C5; 
+            border-radius: 10px;
+        }
+
+        /* Анімація для фінального фото */
+        .modal-enter {
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Фонові елементи (Зайчики, стрічечки, ечпочмаки, чак-чак) -->
+    <div id="background-container" class="fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-0"></div>
+
+    <!-- Основний контент -->
+    <main class="relative z-10">
+        
+        <!-- Секція 1: Головний екран -->
+        <section class="min-h-screen flex flex-col items-center justify-center text-center p-6">
+            <div class="reveal">
+                <p class="text-sm tracking-[0.2em] text-rose-400 mb-4 uppercase">Особливий день</p>
+                <h1 class="text-5xl md:text-7xl text-slate-800 mb-6 font-semibold">З Днем Народження,<br>Кохана!</h1>
+                <p class="text-lg md:text-xl text-slate-600 max-w-xl mx-auto font-light leading-relaxed">
+                    Сьогодні твій день. День найпрекраснішої, найніжнішої та неймовірної дівчини.
+                </p>
+                <div class="mt-12 animate-bounce opacity-50">
+                    <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секція 2: Фото 1 -->
+        <section class="min-h-screen flex flex-col md:flex-row items-center justify-center p-6 md:p-12 max-w-6xl mx-auto gap-12">
+            <div class="w-full md:w-1/2 flex justify-center reveal">
+                <!-- ЗАМІНІТЬ ПОСИЛАННЯ НА СВОЄ ФОТО В src="" -->
+                <div class="photo-frame max-w-sm w-full">
+                    <img src="img/IMG_20251109_152740_199.jpg" alt="Твоє фото 1" class="w-full h-[400px] object-cover rounded">
+                    <p class="text-center mt-4 serif text-xl text-slate-700 italic">Наші моменти</p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 reveal delay-200">
+                <h2 class="text-4xl text-slate-800 mb-6 font-medium serif">Моє татарське сонечко</h2>
+                <p class="text-lg text-slate-600 font-light leading-relaxed mb-4">
+                    Кожен день з тобою — це свято. Ти приносиш стільки світла, тепла та затишку в моє життя. 
+                </p>
+                <p class="text-lg text-slate-600 font-light leading-relaxed">
+                    Нехай твоє життя буде таким же солодким, як справжній медовий чак-чак, а в душі завжди цвіте весна.
+                </p>
+            </div>
+        </section>
+
+        <!-- Секція 3: Фото 2 -->
+        <section class="min-h-screen flex flex-col md:flex-row-reverse items-center justify-center p-6 md:p-12 max-w-6xl mx-auto gap-12">
+            <div class="w-full md:w-1/2 flex justify-center reveal">
+                <!-- ЗАМІНІТЬ ПОСИЛАННЯ НА СВОЄ ФОТО В src="" -->
+                <div class="photo-frame right-tilt max-w-sm w-full">
+                    <img src="img/IMG_20260203_185614_237.jpg" alt="Твоє фото 2" class="w-full h-[400px] object-cover rounded">
+                    <p class="text-center mt-4 serif text-xl text-slate-700 italic">Твоя усмішка</p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 reveal delay-200 md:text-right">
+                <h2 class="text-4xl text-slate-800 mb-6 font-medium serif">Найкрасивіша</h2>
+                <p class="text-lg text-slate-600 font-light leading-relaxed mb-4">
+                    Я безмежно ціную твою турботу, твою щирість і твою любов. Обіцяю робити тебе щасливою щодня.
+                </p>
+                <p class="text-lg text-slate-600 font-light leading-relaxed">
+                    Залишайся такою ж неймовірною, милою, як зайчик, і приголомшливою дівчиною.
+                </p>
+            </div>
+        </section>
+
+        <!-- Секція 4: Фото 3 (Нова) -->
+        <section class="min-h-screen flex flex-col md:flex-row items-center justify-center p-6 md:p-12 max-w-6xl mx-auto gap-12">
+            <div class="w-full md:w-1/2 flex justify-center reveal">
+                <!-- ЗАМІНІТЬ ПОСИЛАННЯ НА СВОЄ ФОТО В src="" -->
+                <div class="photo-frame max-w-sm w-full">
+                    <img src="img/IMG_20251002_103850_560 (1).jpg" alt="Твоє фото 3" class="w-full h-[400px] object-cover rounded">
+                    <p class="text-center mt-4 serif text-xl text-slate-700 italic">Твоя ніжність</p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 reveal delay-200">
+                <h2 class="text-4xl text-slate-800 mb-6 font-medium serif">Моє натхнення</h2>
+                <p class="text-lg text-slate-600 font-light leading-relaxed mb-4">
+                    Кожен твій дотик, кожне слово робить цей світ кращим. З тобою я відчуваю себе найщасливішою людиною на землі.
+                </p>
+                <p class="text-lg text-slate-600 font-light leading-relaxed">
+                    Дякую тобі за те, що ти є. За те, що завжди поруч і підтримуєш у всьому.
+                </p>
+            </div>
+        </section>
+
+        <!-- Секція 5: Цитата / Цікавинка (Нова) -->
+        <section class="py-20 flex items-center justify-center p-6">
+            <div class="reveal bg-white/60 backdrop-blur-md p-10 md:p-16 rounded-3xl shadow-xl max-w-4xl text-center border border-white/40">
+                <span class="text-5xl text-rose-300 block mb-4">"</span>
+                <p class="text-2xl md:text-3xl text-slate-700 serif italic leading-relaxed">
+                    Ти — мій найулюбленіший спогад вчорашнього дня, моє найбільше щастя сьогодні і моя найзаповітніша мрія на завтра.
+                </p>
+                <span class="text-5xl text-rose-300 block mt-4 rotate-180">"</span>
+            </div>
+        </section>
+
+        <!-- Секція 6: Інтерактивна кнопка -->
+        <section class="min-h-[80vh] flex flex-col items-center justify-center text-center p-6">
+            <div class="reveal">
+                <h2 class="text-4xl md:text-5xl text-slate-800 mb-8 font-medium serif">Я тебе кохаю! ❤️</h2>
+                <p class="text-slate-500 mb-12 font-light">У мене є для тебе ще один невеличкий сюрприз...</p>
+                
+                <button id="magic-btn" class="relative group overflow-hidden rounded-full bg-rose-400 hover:bg-rose-500 text-white px-10 py-5 text-xl transition-all duration-300 transform hover:scale-105 shadow-[0_0_40px_rgba(251,113,133,0.4)]">
+                    <span class="relative z-10 flex items-center gap-2">
+                        Натисни на мене <span class="text-2xl">✨</span>
+                    </span>
+                    <div class="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="text-center p-8 text-slate-400 font-light text-sm">
+            Створено з любов'ю для тебе.
+        </footer>
+
+    </main>
+
+    <!-- Модальне вікно з фінальним фото (приховане спочатку) -->
+    <div id="final-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-rose-50/90 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-700">
+        <div class="modal-content text-center p-6 relative max-w-lg w-full">
+            <!-- Кнопка закриття -->
+            <button id="close-modal" class="absolute -top-4 -right-4 md:-right-10 bg-white text-slate-500 hover:text-rose-500 rounded-full w-10 h-10 flex items-center justify-center shadow-lg transition-transform hover:scale-110 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <div class="bg-white p-4 pb-8 rounded-xl shadow-2xl transform rotate-1 border-4 border-white">
+                <!-- ФІНАЛЬНЕ ФОТО (ДОДАНО ID ТА АНІМАЦІЮ ПЛАВНОСТІ): ЗАМІНІТЬ ПОСИЛАННЯ В src="" -->
+                <img id="final-photo" src="img/20260228_234248.jpg" alt="Твоє фінальне фото" class="w-full h-[500px] object-cover rounded-lg shadow-inner transition-opacity duration-300">
+                <h3 class="mt-6 text-3xl serif font-semibold text-rose-500">Зі святом, моя принцесо! 🎉</h3>
+                <p class="mt-2 text-slate-600 font-light mb-6">Ти найкраща дівчина у світі!</p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <!-- Нова кнопка для повернення -->
+                    <button id="return-btn" class="bg-rose-100 hover:bg-rose-200 text-rose-600 px-6 py-3 rounded-full font-medium transition-colors shadow-sm inline-flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        Повернутися
+                    </button>
+                    
+                    <!-- Змінено посилання на кнопку з ідентифікатором -->
+                    <button id="continue-btn" class="bg-rose-400 hover:bg-rose-500 text-white px-8 py-3 rounded-full font-medium transition-colors shadow-md inline-flex items-center gap-2">
+                        Продовження
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Создание фоновых элементов (минималистичные эмодзи)
+        const bgContainer = document.getElementById('background-container');
+        // Зайки, ленточки, "татарские" сладости/выпечка (эчпочмак/чак-чак), цветочки
+        const elements = ['🐰', '🎀', '🥟', '🍯', '🌸', '🤍', '🐇', '✨']; 
+        const elementsCount = 25; // Количество плавающих элементов на фоне
+
+        for (let i = 0; i < elementsCount; i++) {
+            const el = document.createElement('div');
+            el.className = 'bg-element';
+            el.innerText = elements[Math.floor(Math.random() * elements.length)];
+            
+            // Случайное расположение по горизонтали
+            el.style.left = `${Math.random() * 100}vw`;
+            
+            // Случайная задержка и продолжительность анимации для естественности
+            const duration = 15 + Math.random() * 20; // от 15 до 35 секунд
+            const delay = Math.random() * 20; // задержка от 0 до 20 секунд
+            
+            el.style.animationDuration = `${duration}s`;
+            el.style.animationDelay = `-${delay}s`;
+            
+            // Случайный размер (небольшой, чтобы сохранить минимализм)
+            const size = 1 + Math.random() * 1.5;
+            el.style.fontSize = `${size}rem`;
+            
+            // Если это еда или зайки, делаем их чуть прозрачнее
+            el.style.filter = 'grayscale(20%) opacity(80%)';
+
+            bgContainer.appendChild(el);
+        }
+
+        // 2. Плавное появление элементов при скролле
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Можно отписать элемент после появления, чтобы он не исчезал при обратном скролле
+                    // revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15 // Элемент появляется, когда виден на 15%
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 3. Логика кнопки (Конфетти + Сердечки)
+        const magicBtn = document.getElementById('magic-btn');
+
+        magicBtn.addEventListener('click', (e) => {
+            // Запуск конфетти
+            var duration = 3000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                // Сердечки вперемешку с обычным конфетти
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#fb7185', '#fda4af', '#ffffff', '#e11d48']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#fb7185', '#fda4af', '#ffffff', '#e11d48']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Создание вылетающих сердечек из кнопки
+            const rect = magicBtn.getBoundingClientRect();
+            const btnX = rect.left + rect.width / 2;
+            const btnY = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 20; i++) {
+            createHeart(btnX, btnY);
+        }
+
+        // Показуємо фінальне фото з затримкою
+        setTimeout(() => {
+            const modal = document.getElementById('final-modal');
+            const modalContent = modal.querySelector('.modal-content');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.add('modal-enter');
+        }, 1200); // з'явиться через 1.2 секунди після натискання
+    });
+
+    // Логіка для кнопки "Продовження" (зміна фото та перехід в ТГ)
+    let continueClicks = 0;
+    const finalPhoto = document.getElementById('final-photo');
+    const continueBtn = document.getElementById('continue-btn');
+
+    // Масив додаткових фотографій (ЗАМІНІТЬ ПОСИЛАННЯ НА СВОЇ)
+    const additionalPhotos = [
+        "img/20260228_234610.jpg", // Фото після 1-го кліку
+        "img/20260301_000055.jpg"  // Фото після 2-го кліку
+    ];
+
+    continueBtn.addEventListener('click', () => {
+        continueClicks++;
+        
+        if (continueClicks === 1) {
+            // Плавна зміна на друге фото
+            finalPhoto.style.opacity = 0;
+            setTimeout(() => {
+                finalPhoto.src = additionalPhotos[0];
+                finalPhoto.style.opacity = 1;
+            }, 300);
+        } else if (continueClicks === 2) {
+            // Плавна зміна на третє фото
+            finalPhoto.style.opacity = 0;
+            setTimeout(() => {
+                finalPhoto.src = additionalPhotos[1];
+                finalPhoto.style.opacity = 1;
+                // Натякаємо, що далі буде перехід у Telegram
+                continueBtn.innerHTML = `
+                    Продовження в тг )
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                `;
+            }, 300);
+        } else if (continueClicks >= 3) {
+            // Третій клік - відкриваємо Telegram
+            window.open('https://t.me/main72_Dev', '_blank');
+        }
+    });
+
+    // Скидаємо лічильник при закритті модального вікна (якщо вона захоче відкрити знову)
+    const resetModal = () => {
+        continueClicks = 0;
+        setTimeout(() => {
+            finalPhoto.src = "img/20260228_234248.jpg"; // Повертаємо перше фото
+            continueBtn.innerHTML = `
+                Продовження
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            `;
+        }, 500);
+    };
+
+    // Загальна функція закриття модального вікна
+    const closeModal = () => {
+        const modal = document.getElementById('final-modal');
+        const modalContent = modal.querySelector('.modal-content');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modalContent.classList.remove('modal-enter');
+        resetModal(); // Скидаємо стан після закриття
+    };
+
+    // Закриття модального вікна по хрестику та новій кнопці
+    document.getElementById('close-modal').addEventListener('click', closeModal);
+    document.getElementById('return-btn').addEventListener('click', closeModal);
+
+    function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerText = ['❤️', '💖', '💕', '🥰'][Math.floor(Math.random() * 4)];
+            
+            // Устанавливаем начальную позицию в центре кнопки
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+
+            // Генерируем случайное направление полета
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 100 + Math.random() * 200; // Дистанция полета
+            
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance - 150; // Смещение вверх
+            
+            heart.style.setProperty('--tx', `${tx}px`);
+            heart.style.setProperty('--ty', `${ty}px`);
+
+            document.body.appendChild(heart);
+
+            // Удаляем сердечко после завершения анимации
+            setTimeout(() => {
+                heart.remove();
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
